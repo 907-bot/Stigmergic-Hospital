@@ -7,6 +7,11 @@ class PatientBase(BaseModel):
     severity: float = Field(..., ge=0.0, le=1.0, example=0.9)
     condition: str = Field(..., example="heart_attack")
     status: str = Field(..., example="waiting")
+    heart_rate: Optional[int] = Field(None, example=88)
+    bp_systolic: Optional[int] = Field(None, example=140)
+    bp_diastolic: Optional[int] = Field(None, example=90)
+    o2_saturation: Optional[int] = Field(None, example=97)
+    temperature: Optional[float] = Field(None, example=37.2)
 
 class PatientCreate(PatientBase):
     pass
@@ -15,11 +20,12 @@ class PatientUpdate(BaseModel):
     severity: Optional[float] = Field(None, ge=0.0, le=1.0)
     condition: Optional[str] = None
     status: Optional[str] = None
+    heart_rate: Optional[int] = None
+    bp_systolic: Optional[int] = None
+    bp_diastolic: Optional[int] = None
+    o2_saturation: Optional[int] = None
+    temperature: Optional[float] = None
 
 class Patient(PatientBase):
-    id: Optional[int] = None
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
-
-    class Config:
-        orm_mode = True
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None

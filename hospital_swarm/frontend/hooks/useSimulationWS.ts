@@ -6,7 +6,7 @@ export const useSimulationWS = () => {
 
   useEffect(() => {
     // Use the backend port 9001 as per the new configuration
-    const ws = new WebSocket(`ws://${window.location.hostname}:9001/ws/ws`);
+    const ws = new WebSocket(`ws://${window.location.hostname}:9001/api/v1/ws/ws`);
 
     ws.onopen = () => {
       setConnected(true);

@@ -1,11 +1,16 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from typing import Dict, Any
 from app.services.simulation_service import SimulationService
 
 router = APIRouter()
 
+
+async def get_simulation_service(request: Request) -> SimulationService:
+    return request.app.state.simulation_service
+
+
 @router.get("/", response_model=Dict[str, Any])
-async def get_metrics(simulation_service: SimulationService = Depends()):
+async def get_metrics(simulation_service: SimulationService = Depends(get_simulation_service)):
     status = await simulation_service.get_status()
     # In a real implementation, we would compute more detailed metrics
     return {

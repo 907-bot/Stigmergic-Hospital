@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hospital-swarm-frontend
+  namespace: hospital-swarm
+  labels:
+    app: hospital-swarm-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hospital-swarm-frontend
+  template:
+    metadata:
+      labels:
+        app: hospital-swarm-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: hospital-swarm/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: hospital-swarm-frontend-config
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hospital-swarm-frontend-service
+  namespace: hospital-swarm
+spec:
+  selector:
+    app: hospital-swarm-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: ClusterIP

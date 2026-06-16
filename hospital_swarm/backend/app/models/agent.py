@@ -15,9 +15,5 @@ class AgentUpdate(BaseModel):
     status: Optional[str] = None
 
 class Agent(AgentBase):
-    id: Optional[int] = None
-    created_at: datetime = Field(default_factory=datetime.now)
-    updated_at: datetime = Field(default_factory=datetime.now)
-
-    class Config:
-        orm_mode = True
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None

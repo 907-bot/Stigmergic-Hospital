@@ -1,11 +1,17 @@
 import { useSimulationWS } from '@/hooks/useSimulationWS';
-import styles from '@/styles/right-panel.module.css';
+
+const s: { [key: string]: React.CSSProperties } = {
+  panel: { height: '100%', display: 'flex', flexDirection: 'column', padding: 16 },
+  title: { margin: 0, marginBottom: 16, fontSize: 16, fontWeight: 600 },
+  streams: { display: 'flex', flexDirection: 'column', gap: 8 },
+  streamItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+  label: { fontWeight: 500 },
+  value: { opacity: 0.8 },
+};
 
 export default function RightPanel() {
   const { data } = useSimulationWS();
   
-  // We don't have pheromone data in the broadcast yet, so we'll simulate or leave as placeholder
-  // In a full implementation, we would include pheromone data in the broadcast
   const pheromoneStreams = [
     { type: 'EMERGENCY', strength: 0.8, active: true },
     { type: 'ICU', strength: 0.6, active: true },
@@ -15,15 +21,15 @@ export default function RightPanel() {
   ];
 
   return (
-    <div className={styles.panel}>
-      <h2 className={styles.title}>Pheromone Streams</h2>
-      <div className={styles.streams}>
-        {pheromoneStreams.map((stream, index) => (
-          <div key={index} className={styles.streamItem}>
-            <span className={styles.label}>{stream.type}:</span>
-            <span className={styles.value}>
-              {stream.active ? 'Active' : 'Inactive'} 
-              {(stream.active && stream.strength) ? ` (${(stream.strength * 100).toFixed(0)}%)` : ''}
+    <div style={s.panel}>
+      <h2 style={s.title}>Pheromone Streams</h2>
+      <div style={s.streams}>
+        {pheromoneStreams.map((stream, i) => (
+          <div key={i} style={s.streamItem}>
+            <span style={s.label}>{stream.type}:</span>
+            <span style={s.value}>
+              {stream.active ? 'Active' : 'Inactive'}
+              {stream.active && stream.strength ? ` (${(stream.strength * 100).toFixed(0)}%)` : ''}
             </span>
           </div>
         ))}
